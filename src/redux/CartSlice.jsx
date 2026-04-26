@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-// initial cart state
 const initialState = {
   items: []
 };
@@ -10,59 +9,48 @@ const cartSlice = createSlice({
   initialState,
 
   reducers: {
-    // 1. ADD TO CART
-    addToCart: (state, action) => {
-      const existingItem = state.items.find(
-        (item) => item.id === action.payload.id
+
+    // ✅ ADD ITEM
+    addItem: (state, action) => {
+      const existing = state.items.find(
+        item => item.id === action.payload.id
       );
 
-      if (existingItem) {
-        existingItem.quantity += 1;
+      if (existing) {
+        existing.quantity += 1;
       } else {
-        state.items.push({
-          ...action.payload,
-          quantity: 1
-        });
+        state.items.push({ ...action.payload, quantity: 1 });
       }
     },
 
-    // 2. REMOVE ITEM COMPLETELY
-    removeFromCart: (state, action) => {
+    // ❌ REMOVE ITEM COMPLETELY
+    removeItem: (state, action) => {
       state.items = state.items.filter(
-        (item) => item.id !== action.payload
+        item => item.id !== action.payload
       );
     },
 
-    // 3. INCREASE QUANTITY
-    increaseQty: (state, action) => {
-      const item = state.items.find(
-        (item) => item.id === action.payload
-      );
+    // 🔼 UPDATE QUANTITY (increase/decrease)
+    updateQuantity: (state, action) => {
+      const { id, type } = action.payload;
+
+      const item = state.items.find(i => i.id === id);
+
       if (item) {
-        item.quantity += 1;
-      }
-    },
+        if (type === "increase") {
+          item.quantity += 1;
+        } else if (type === "decrease") {
+          item.quantity -= 1;
 
-    // 4. DECREASE QUANTITY
-    decreaseQty: (state, action) => {
-      const item = state.items.find(
-        (item) => item.id === action.payload
-      );
-
-      if (item && item.quantity > 1) {
-        item.quantity -= 1;
+          // remove if quantity becomes 0
+          if (item.quantity <= 0) {
+            state.items = state.items.filter(i => i.id !== id);
+          }
+        }
       }
     }
   }
 });
 
-// export actions
-export const {
-  addToCart,
-  removeFromCart,
-  increaseQty,
-  decreaseQty
-} = cartSlice.actions;
-
-// export reducer
+export const { addItem, removeItem, updateQuantity } = cartSlice.actions;
 export default cartSlice.reducer;
