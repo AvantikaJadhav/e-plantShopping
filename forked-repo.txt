@@ -1,0 +1,6 @@
+curl https://api.github.com/repos/ibm-developer-skills-network/mc-Introduction-to-Git-and-GitHub/forks
+{
+  "message": "Not Found",
+  "documentation_url": "https://docs.github.com/rest/repos/forks#list-forks",
+  "status": "404"
+}
