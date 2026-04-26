@@ -17,5 +17,7 @@ A React + Redux based plant shopping cart application.
 * JavaScript
 * CSS
 
-Bug fix: typo corrected in branch bug-fix-typo
+
+
+Bug fix: updated content in bug-fix-typo branch
 
